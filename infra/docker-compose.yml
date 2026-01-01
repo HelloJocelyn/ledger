@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ledgerx-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_123
+      MYSQL_DATABASE: ledgerx
+      MYSQL_USER: ledgerx
+      MYSQL_PASSWORD: ledgerx_123
+      TZ: Asia/Tokyo
+    command: >
+      mysqld
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=caching_sha2_password
+      --max_connections=300
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql           # 数据持久化
+      - ./mysql/conf.d:/etc/mysql/conf.d      # 自定义配置(可选)
+      - ./mysql/init:/docker-entrypoint-initdb.d  # 初始化脚本(可选)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 可选：简单的 Web 管理界面（Adminer）
+#  adminer:
+#    image: adminer:latest
+#    container_name: ledgerx-adminer
+#    restart: unless-stopped
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      TZ: Asia/Tokyo
+#    depends_on:
+#      - mysql

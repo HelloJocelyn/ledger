@@ -1,0 +1,18 @@
+# use LF by default
+* text=auto eol=lf
+
+# frontend
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+*.css  text eol=lf
+*.md   text eol=lf
+
+# Shell / Docker
+*.sh text eol=lf
+Dockerfile text eol=lf
+
+# Windows
+*.bat text eol=crlf

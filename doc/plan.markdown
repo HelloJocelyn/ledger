@@ -146,8 +146,9 @@ GET /v1/metrics/today
 ```
 repo/
   backend/
-    payment-api/           # Spring Boot (Java), Web + JPA/MyBatis + Flyway
-    stream-worker/         # Kotlin：消费 Kafka，写聚合指标
+    api/           # Spring Boot (Java), Web + JPA/MyBatis + Flyway
+    market-stream/ # 模拟/接收市场行情和成交数据，把它们作为“事件流”推送出去
+    quant-engine/  # 订阅事件流，在内存里做一些简单指标（如移动平均），给出简单的策略信号（BUY/SELL/HOLD），对外提供查询接口
     risk-engine/           # 可选模块：规则引擎（Drools/简化版）
     shared/                # DTO、错误码、事件 schema
   analytics/

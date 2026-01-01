@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { loginPasskey } from './lib/passkey';
-import {identifyAndSendOtp} from './lib/auth';
+import { loginPasskey } from '../lib/passkey';
+import {identifyAndSendOtp} from '../lib/auth';
 import { useRouter } from "next/navigation";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -356,4 +357,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
