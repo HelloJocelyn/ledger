@@ -16,11 +16,13 @@ export type VerifyOtpResp =
       verified: true;
       next: "SIGNED_IN";
       signupToken: string;
+      hasPasskey: false;
     }
   | {
       verified: true;
       next: "CREATE_ACCOUNT";
       signupToken: string;
+      hasPasskey: false;
     };
 
 

@@ -1,9 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { loginPasskey } from './lib/passkey';
-import {identifyAndSendOtp} from './lib/auth';
+import {identifyAndSendOtp} from '@/app/lib/auth';
 import { useRouter } from "next/navigation";
+import { apiPost } from './lib/api';
+import {PublicKeyCredentialRequestOptionsJSON} from "@/app/features/passkey/types"
+import { toPublicKeyCredentialCreationOptions,
+  toPublicKeyCredentialRequestOptions,
+  cleanPublicKeyRequestOptions,
+  credentialToJson} from './features/passkey/utils/webauthn';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -48,14 +53,17 @@ export default function LoginPage() {
 
     try {
       // Passkey 登录通常不需要用户名，但如果有输入则使用
-      const username = emailOrPhone.trim() || 'user';
-      const res = await loginPasskey(username);
-      if (res?.verified) {
-        console.log('Passkey 登录成功');
-        // TODO: 跳转到成功页面或主页面
-      } else {
-        setError('Passkey 验证失败，请重试');
-      }
+      const username = emailOrPhone.trim();
+      const optionsJSON = await apiPost<PublicKeyCredentialRequestOptionsJSON>("/api/passkey/authentication/options",{email:username});
+      const pkRaw = toPublicKeyCredentialRequestOptions(optionsJSON)
+      const publicKey = cleanPublicKeyRequestOptions(pkRaw);
+      const cred = await navigator.credentials.get({ publicKey });
+      if (!cred || !(cred instanceof PublicKeyCredential)) throw new Error("Failed to get assertion");
+      const assertion = credentialToJson(cred);
+      console.log("assertion payload", assertion);
+console.log("assertion.response keys", Object.keys(assertion.response || {}));
+      await apiPost("/api/passkey/authentication/finish", assertion);
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err?.message || 'Passkey 登录失败，请检查是否在安全环境下（HTTPS/localhost）');
     } finally {

@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { loginPasskey } from '../lib/passkey';
-import {identifyAndSendOtp} from '../lib/auth';
+import {identifyAndSendOtp} from '@/app/lib/auth';
 import { useRouter } from "next/navigation";
 
 

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { OtpCtx, verifyOtp, resendOtp } from '../../lib/auth';
 import { useRouter } from 'next/navigation';
 import { setDefaultResultOrder } from 'dns';
+import {isPlatformAuthenticatorAvailableSafe} from "@/app/lib/passkey"
 
 function readCtx(): OtpCtx | null {
   try {
@@ -64,14 +65,22 @@ export default function VerifyOtpPage() {
       if (r.next === 'SIGNED_IN') {
         sessionStorage.removeItem('otp_ctx');
         sessionStorage.setItem('signup_token',r.signupToken)
-        router.replace('/');
+        if (!r.hasPasskey && await isPlatformAuthenticatorAvailableSafe()) {
+          router.replace("/onboarding/passkey");
+        } else {
+          router.replace("/dashboard");
+        }
         return;
       }
       if (r.next === 'CREATE_ACCOUNT') {
         sessionStorage.removeItem('otp_ctx');
         sessionStorage.setItem('signup_token',r.signupToken)
         if (r.signupToken) sessionStorage.setItem('signupToken', r.signupToken);
-        router.replace('/signup');
+        if (!r.hasPasskey && await isPlatformAuthenticatorAvailableSafe()) {
+          router.replace("/passkey/nudge?next=/dashboard");
+        } else {
+          router.replace("/dashboard");
+        }
         return;
       }
       setMsg('Unexpected error');
