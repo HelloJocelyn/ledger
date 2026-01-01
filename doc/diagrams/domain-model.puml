@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam classAttributeIconSize 0
+
+' =========================
+' Account
+' =========================
+class Account {
+  +id: Long
+  +name: String
+  +type: AccountType
+  +currency: String
+  --
+  +institution: String?
+  +note: String?
+}
+
+enum AccountType {
+  BANK
+  WALLET        ' PayPay
+  CREDIT_CARD
+  BROKER
+}
+
+' =========================
+' Transaction
+' =========================
+class Transaction {
+  +id: Long
+  +accountId: Long
+  +dateTime: LocalDateTime
+  +amount: Money
+  +direction: Direction
+  --
+  +description: String
+  +merchant: String?
+  +categoryId: Long?
+  --
+  +sourceType: SourceType
+  +sourceRef: String
+  +linkedTransferId: Long?
+  +createdAt: Instant
+}
+
+enum Direction {
+  IN
+  OUT
+}
+
+enum SourceType {
+  MANUAL
+  OCR_IMPORT
+}
+
+' =========================
+' Transfer
+' =========================
+class Transfer {
+  +id: Long
+  +fromAccountId: Long
+  +toAccountId: Long
+  +amount: Money
+  --
+  +fee: Money?
+  +dateTime: LocalDateTime
+}
+
+' =========================
+' Relationships
+' =========================
+
+Account "1" <-- "0..*" Transaction : owns
+Transfer "1" o-- "2" Transaction : links
+Account "1" <-- "0..*" Transfer : from / to
+
+@enduml
