@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: payment-api
+
+  mail:
+    host: smtp.gmail.com    # 先用Gmail/Outlook，或换成你选的服务商
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+  # 如果用 Redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # password: your_redis_password
+
+security:
+  jwt:
+    secret: "change-this-to-a-very-long-random-secret"
+    issuer: "payquant-api"
+    expire-minutes: 120
+
+auth:
+  otp:
+    ttl-seconds: 300     # 验证码有效期 5 分钟
+    cooldown-seconds: 60 # 发码冷却 60 秒（简单限流）

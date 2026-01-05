@@ -1,0 +1,62 @@
+ @startuml
+!include <C4/C4_Context>
+
+autoactivate on
+
+' ===== 全局风格 =====
+skinparam backgroundColor white
+skinparam sequence {
+  ParticipantBackgroundColor #E3F2FD
+  ParticipantBorderColor #1E88E5
+  LifeLineBorderColor #90CAF9
+  LifeLineBackgroundColor #E3F2FD
+  ArrowColor #555555
+  ActorBorderColor #1E88E5
+  ActorBackgroundColor #E3F2FD
+'  BoxBorderColor #1E88E5
+  BoxBorderColor transparent
+    BoxBackgroundColor transparent
+}
+
+actor User
+
+box " 🔑"
+  participant Authenticator
+end box
+
+box "🌍"
+  participant Browser
+end box
+
+box "Frontend"
+  participant Frontend
+end box
+
+box "Backend"
+  participant Backend
+end box
+
+'== Initiate ==
+
+User -> Frontend: Initiate passkey creation
+Frontend -> Backend: Request credential data
+Backend --> Frontend: User info,\nchallenge,\ncredential IDs
+
+'== Create Credential ==
+
+Frontend -> Browser: navigator.credentials.create()
+Browser -> Authenticator: Create passkey
+Authenticator -> User: User verification
+User --> Authenticator: Successful verification
+Authenticator -> Browser: Public key + credential
+
+'== Register ==
+
+Browser -> Frontend: Return public key credential
+Frontend -> Backend: Send public key credential
+Backend -> Backend: Store public key and data
+
+'== Finish ==
+
+Backend --> User: Send notification
+@enduml
