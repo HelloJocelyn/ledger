@@ -1,72 +1,63 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from 'react';
+import type { Transaction, WalletSummary } from './types';
+import Sidebar from './components/Sidebar';
+import MainContent from './components/MainContent';
+import RightSidebar from './components/RightSidebar';
 
 export default function DashboardPage() {
-  const [now, setNow] = useState<string>("");
+  // Mock data
+  const [transactions] = useState<Transaction[]>([
+    {
+      id: '1',
+      title: 'Transfer to Mikey',
+      description: 'Online food order',
+      amount: 1250.60,
+      type: 'expense',
+      date: new Date('2024-01-22'),
+    },
+    {
+      id: '2',
+      title: 'Salary For the Month of Apr',
+      description: 'Monthly Salary',
+      amount: 12840.00,
+      type: 'income',
+      date: new Date('2024-01-22'),
+    },
+    {
+      id: '3',
+      title: 'Grocery Shopping',
+      description: 'Supermarket purchase',
+      amount: 450.30,
+      type: 'expense',
+      date: new Date('2024-01-21'),
+    },
+  ]);
 
-  useEffect(() => {
-    setNow(new Date().toLocaleString());
-  }, []);
+  const walletSummary: WalletSummary = {
+    outcome: 460.00,
+    income: 840.00,
+    thisWeek: { value: '3.45k', change: '+6.4%', trend: 'up' },
+    thisMonth: { value: '12.9k', change: '-3.1%', trend: 'down' },
+    upcoming: { value: '14.4k', change: '+10.3%', trend: 'up' },
+  };
 
   return (
-    <main style={styles.container}>
-      <h1 style={styles.title}>📊 Dashboard</h1>
-
-      <p style={styles.text}>
-        如果你能看到这个页面，说明：
-      </p>
-
-      <ul style={styles.list}>
-        <li>✅ 路由工作正常</li>
-        <li>✅ 登录后跳转成功</li>
-        <li>✅ App Router 没问题</li>
-      </ul>
-
-      <div style={styles.card}>
-        <p style={styles.cardTitle}>当前时间</p>
-        <p>{now}</p>
-      </div>
-
-      <div style={styles.card}>
-        <p style={styles.cardTitle}>下一步你可以做：</p>
-        <ul>
-          <li>👉 加安全设置页（Passkey）</li>
-          <li>👉 把这里换成真实业务数据</li>
-          <li>👉 验证 post-auth / nudge 流程</li>
-        </ul>
-      </div>
-    </main>
+    <div style={styles.container}>
+      <Sidebar />
+      <MainContent transactions={transactions} />
+      <RightSidebar walletSummary={walletSummary} />
+    </div>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    padding: "40px",
-    maxWidth: "800px",
-    margin: "0 auto",
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont",
-  },
-  title: {
-    fontSize: "28px",
-    marginBottom: "16px",
-  },
-  text: {
-    fontSize: "16px",
-    marginBottom: "12px",
-  },
-  list: {
-    marginBottom: "24px",
-  },
-  card: {
-    border: "1px solid #e5e7eb",
-    borderRadius: "8px",
-    padding: "16px",
-    marginBottom: "16px",
-    background: "#fafafa",
-  },
-  cardTitle: {
-    fontWeight: 600,
-    marginBottom: "8px",
+    display: 'flex',
+    minHeight: '100vh',
+    background: 'linear-gradient(180deg, #0b1020 0%, #0a0f1a 60%, #070b12 100%)',
+    color: '#e8eefc',
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 };
