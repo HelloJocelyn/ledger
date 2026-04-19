@@ -1,6 +1,7 @@
 package com.ledgerx.auth.security;
 
 import com.ledgerx.auth.security.filter.BearerTokenAuthFilter;
+import com.ledgerx.auth.security.filter.ClientBasicAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -19,7 +20,10 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(
-      HttpSecurity http, BearerTokenAuthFilter authFilter) throws Exception {
+      HttpSecurity http,
+      ClientBasicAuthFilter clientBasicAuthFilter,
+      BearerTokenAuthFilter authFilter)
+      throws Exception {
 
     http.cors(Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
@@ -27,7 +31,11 @@ public class SecurityConfig {
             auth ->
                 auth.requestMatchers("/", "/login", "/css/**", "/js/**")
                     .permitAll()
-                    .requestMatchers(("/api/auth/**"))
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                    .permitAll()
+                    .requestMatchers("/auth/**")
+                    .permitAll()
+                    .requestMatchers("/api/auth/**")
                     .permitAll()
                     .requestMatchers("/api/passkey/**")
                     .permitAll()
@@ -37,8 +45,8 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-        .httpBasic(Customizer.withDefaults());
+        .addFilterBefore(clientBasicAuthFilter, BearerTokenAuthFilter.class)
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     //                .oauth2Login(
     //                        oauth2 ->
     //                                oauth2
