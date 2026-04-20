@@ -40,6 +40,69 @@ export interface PublicKeyCredentialCreationOptionsJSON {
     extensions?: Record<string, unknown>;
   }
 
+  /**
+ * JSON-serializable credential descriptor
+ */
+export interface PublicKeyCredentialDescriptorJSON {
+  /**
+   * Credential type, always "public-key"
+   */
+  type: PublicKeyCredentialType; // "public-key"
+
+  /**
+   * Base64URL-encoded credential ID
+   */
+  id: string;
+
+  /**
+   * Supported authenticator transports (optional)
+   */
+  transports?: AuthenticatorTransport[];
+}
+
+
+
+  /**
+ * JSON-serializable version of PublicKeyCredentialRequestOptions
+ * Used for Passkey authentication (navigator.credentials.get)
+ */
+export interface PublicKeyCredentialRequestOptionsJSON {
+  /**
+   * Base64URL-encoded challenge (required)
+   */
+  challenge: string;
+
+  /**
+   * Relying Party ID (optional)
+   * Usually your domain, e.g. "example.com"
+   */
+  rpId?: string;
+
+  /**
+   * Timeout in milliseconds (optional)
+   */
+  timeout?: number;
+
+  /**
+   * Allowed credentials for this authentication ceremony
+   * If omitted or empty, discoverable credentials may be used
+   */
+  allowCredentials?: PublicKeyCredentialDescriptorJSON[];
+
+  /**
+   * User verification requirement
+   * "required" | "preferred" | "discouraged"
+   */
+  userVerification?: UserVerificationRequirement;
+
+  /**
+   * WebAuthn extensions (optional)
+   * Only include keys you actually use
+   */
+  extensions?: AuthenticationExtensionsClientInputs;
+}
+
+
 
   export type AuthenticatorTransport =
   | "usb"

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 public class BearerTokenAuthFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;

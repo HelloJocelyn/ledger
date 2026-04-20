@@ -35,4 +35,3 @@ export interface CreateCardRequest {
   holder: string;
   validThru: string;
 }
-

@@ -45,17 +45,8 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .addFilterBefore(clientBasicAuthFilter, BearerTokenAuthFilter.class)
-        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
-    //                .oauth2Login(
-    //                        oauth2 ->
-    //                                oauth2
-    //                                        .loginPage("/login") // 你可以做一个简单的登录页，按钮跳
-    // /oauth2/authorization/github
-    //                                        .userInfoEndpoint(userInfo ->
-    // userInfo.userService(customOAuth2UserService))
-    //                                        .defaultSuccessUrl("/me", true) // 登录后跳转页面，可以改成你前端的地址
-    //                );
+        .addFilterBefore(clientBasicAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(authFilter, ClientBasicAuthFilter.class);
 
     return http.build();
   }
