@@ -34,7 +34,7 @@ dependencies {
     // 测试（有些在 spring-conventions 里已经加过，这里可以按需精简）
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.rest-assured:rest-assured:5.4.0")
-    implementation(project(":auth"))
+//    implementation(project(":auth"))
     implementation(project(":ledger"))
 }
 

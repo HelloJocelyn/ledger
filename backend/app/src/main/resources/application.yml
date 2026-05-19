@@ -10,25 +10,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            client-id: ${GITHUB_CLIENT_ID}
-            client-secret: ${GITHUB_CLIENT_SECRET}
-            scope:
-              - read:user
-              - user:email
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            client-name: GitHub
-        provider:
-          github:
-            authorization-uri: https://github.com/login/oauth/authorize
-            token-uri: https://github.com/login/oauth/access_token
-            user-info-uri: https://api.github.com/user
-            user-name-attribute: id   # GitHub 用户唯一 id
 ledgerx:
   auth:
     signup-token-ttl: 15m

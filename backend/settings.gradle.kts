@@ -36,6 +36,5 @@ dependencyResolutionManagement {
 //}
 
 include("ledger", "list", "utilities")
-include("market-stream")
 include("quant-engine")
 include("app")

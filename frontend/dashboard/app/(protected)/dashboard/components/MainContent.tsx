@@ -6,6 +6,7 @@ import TransactionsSection from './TransactionsSection';
 import CardsContent from './CardsContent';
 import CreditHistoryContent from './CreditHistoryContent';
 import InstallmentsContent from './InstallmentsContent';
+import MarketInsightContent from './MarketInsightContent';
 
 interface MainContentProps {
   transactions: Transaction[];
@@ -36,6 +37,8 @@ export default function MainContent({ transactions }: MainContentProps) {
         return <CreditHistoryContent />;
       case 'installments':
         return <InstallmentsContent />;
+      case 'market-insight':
+        return <MarketInsightContent />;
       default:
         return null;
     }

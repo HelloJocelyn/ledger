@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping({"/auth/passkey"})
+@RequestMapping({"/api/auth/passkey"})
 @RequiredArgsConstructor
 public class PasskeyController {
 

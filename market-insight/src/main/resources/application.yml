@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ledgerx?serverTimezone=Asia/Tokyo&characterEncoding=utf8
+    username: ledgerx
+    password: ledgerx_123
+  jpa:
+    hibernate:
+      ddl-auto: none     # 你已经手写了建表 SQL，就不要自动建表了
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+
+
+market:
+  finnhub:
+    api-key: d855lehr01qke7mb6n5gd855lehr01qke7mb6n60
+    base-url: https://finnhub.io/api/v1
+
+  alpha-vantage:
+    api-key: PP11JCBCGJDGCXBO
+    base-url: https://www.alphavantage.co
+
+  twelvedata:
+    base-url: https://api.twelvedata.com
+    api-key: d525dc77f91b4976a5be1274cd435f5a
+    output-size: 600

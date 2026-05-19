@@ -11,6 +11,7 @@ export default function Tabs({ selectedTab, onTabChange }: TabsProps) {
     { key: 'cards' as TabType, label: 'my cards' },
     { key: 'history' as TabType, label: 'credit history' },
     { key: 'installments' as TabType, label: 'installments' },
+    { key: 'market-insight' as TabType, label: 'market insight' },
   ];
 
   return (
