@@ -56,6 +56,31 @@ CREATE TABLE IF NOT EXISTS user_social_account
   COLLATE = utf8mb4_unicode_ci;
 
 
+-- CREATE TABLE IF NOT EXISTS keyring.fido2_registered_keys (
+--      app_id text,
+--      username text,
+--      public_key_id text,
+--      aaguid text,
+--      challenge text,
+--      user_handle text,
+--      public_key text,
+--      public_key_type text,
+--      public_key_alg text,
+--      sign_count bigint,
+--      authenticator_attachment text,
+--      transports set<text>,
+--      user_agent text,
+--      remote_address text,
+--      origin text,
+--      created_at timestamp,
+--      last_used_at timestamp,
+--      integrity text,
+--      client_id text,
+--      disabled timestamp,
+--      PRIMARY KEY ((app_id, username), public_key_id)
+-- );
+
+
 -- =====================================
 --   PASSKEY (WEBAUTHN) TABLE
 -- =====================================
