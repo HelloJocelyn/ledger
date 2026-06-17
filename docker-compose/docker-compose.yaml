@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: trading-sim-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trading
+      POSTGRES_PASSWORD: trading123
+      POSTGRES_DB: trading_sim
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgre:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading -d trading_sim"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  mysql:
+    image: mysql:9.3
+    container_name: ledgerx-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_123
+      MYSQL_DATABASE: ledgerx
+      MYSQL_USER: ledgerx
+      MYSQL_PASSWORD: ledgerx_123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "ledgerx", "-pledgerx_123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+ 
+volumes:
+  postgres_data:
+  mysql_data:
