@@ -7,6 +7,7 @@ import CardsContent from './CardsContent';
 import CreditHistoryContent from './CreditHistoryContent';
 import InstallmentsContent from './InstallmentsContent';
 import MarketInsightContent from './MarketInsightContent';
+import AnalysisContent from './AnalysisContent';
 
 interface MainContentProps {
   transactions: Transaction[];
@@ -39,6 +40,8 @@ export default function MainContent({ transactions }: MainContentProps) {
         return <InstallmentsContent />;
       case 'market-insight':
         return <MarketInsightContent />;
+      case 'analysis':
+        return <AnalysisContent />;
       default:
         return null;
     }
@@ -59,4 +62,3 @@ const styles: Record<string, React.CSSProperties> = {
     overflowY: 'auto',
   },
 };
-

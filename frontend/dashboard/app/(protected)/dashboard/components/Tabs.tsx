@@ -12,6 +12,7 @@ export default function Tabs({ selectedTab, onTabChange }: TabsProps) {
     { key: 'history' as TabType, label: 'credit history' },
     { key: 'installments' as TabType, label: 'installments' },
     { key: 'market-insight' as TabType, label: 'market insight' },
+    { key: 'analysis' as TabType, label: 'analysis' },
   ];
 
   return (
@@ -35,6 +36,7 @@ export default function Tabs({ selectedTab, onTabChange }: TabsProps) {
 const styles: Record<string, React.CSSProperties> = {
   tabs: {
     display: 'flex',
+    flexWrap: 'wrap',
     gap: '20px',
     marginBottom: '30px',
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',

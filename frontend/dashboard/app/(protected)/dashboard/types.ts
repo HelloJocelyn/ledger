@@ -15,7 +15,55 @@ export interface WalletSummary {
   upcoming: { value: string; change: string; trend: 'up' | 'down' };
 }
 
-export type TabType = 'summary' | 'cards' | 'history' | 'installments' | 'market-insight';
+export type TabType = 'summary' | 'cards' | 'history' | 'installments' | 'market-insight' | 'analysis';
+
+export type AnalysisMarket = 'SP500' | 'NIKKEI_200';
+export type AnalysisCountry = 'US' | 'JP';
+export type AnalysisRating = 'STRONG' | 'POSITIVE' | 'NEUTRAL' | 'CAUTIOUS';
+
+export interface EarningsAnalysis {
+  symbol: string;
+  company: string;
+  market: AnalysisMarket;
+  fiscalPeriod: string;
+  currency: string;
+  revenueMillions: number;
+  revenueGrowthPct: number;
+  operatingMarginPct: number;
+  eps: number;
+  epsGrowthPct: number;
+  qualityScore: number;
+  rating: AnalysisRating;
+  highlights: string[];
+  risks: string[];
+}
+
+export interface IpoAnalysis {
+  company: string;
+  ticker: string | null;
+  country: AnalysisCountry;
+  exchange: string;
+  expectedDate: string;
+  status: 'EXPECTED' | 'FILED' | 'PRICED';
+  priceRange: string | null;
+  sector: string;
+  opportunityScore: number;
+  summary: string;
+}
+
+export interface AnalysisOverview {
+  generatedAt: string;
+  dataSource: string;
+  isDemo: boolean;
+  earnings: EarningsAnalysis[];
+  ipos: IpoAnalysis[];
+  summary: {
+    companiesAnalyzed: number;
+    upcomingIpos: number;
+    averageQualityScore: number;
+    positiveEarnings: number;
+  };
+}
 
 /** Mirrors backend StockSignalDaily entity */
 export interface StockSignalDaily {
