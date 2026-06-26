@@ -1,6 +1,7 @@
 // lib/api.ts
 export const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 export const MARKET_API_BASE = process.env.NEXT_PUBLIC_MARKET_API_BASE ?? "http://localhost:8081";
+export const ANALYSIS_API_BASE = process.env.NEXT_PUBLIC_ANALYSIS_API_BASE ?? "http://localhost:8082";
 
 export type ApiErrorPayload = {
     error?: string;
@@ -8,7 +9,7 @@ export type ApiErrorPayload = {
     status?: number;
 };
 
-async function parseJsonSafe(res: Response): Promise<any> {
+async function parseJsonSafe(res: Response): Promise<unknown> {
     const text = await res.text();
     if (!text) return null;
     try {
@@ -16,6 +17,14 @@ async function parseJsonSafe(res: Response): Promise<any> {
     } catch {
         return { raw: text };
     }
+}
+
+function apiErrorMessage(data: unknown, fallback: string): string {
+    if (data && typeof data === "object") {
+        const payload = data as ApiErrorPayload;
+        return payload.error || payload.message || fallback;
+    }
+    return fallback;
 }
 
 export async function apiGet<T>(path: string, baseUrl: string = API_BASE): Promise<T> {
@@ -36,9 +45,7 @@ export async function apiGet<T>(path: string, baseUrl: string = API_BASE): Promi
         if (res.status === 401) {
             sessionStorage.removeItem("signup_token");
         }
-        const msg =
-            (data && (data.error || data.message)) ||
-            `HTTP ${res.status} ${res.statusText}`;
+        const msg = apiErrorMessage(data, `HTTP ${res.status} ${res.statusText}`);
         throw new Error(msg);
     }
     return data as T;
@@ -66,9 +73,7 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
         if(res.status === 401){
             sessionStorage.removeItem("signup_token");
         }
-        const msg =
-            (data && (data.error || data.message)) ||
-            `HTTP ${res.status} ${res.statusText}`;
+        const msg = apiErrorMessage(data, `HTTP ${res.status} ${res.statusText}`);
         throw new Error(msg);
     }
     return data as T;
